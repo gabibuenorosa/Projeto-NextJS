@@ -1,3 +1,5 @@
+'use client'
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -8,13 +10,50 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const router = useRouter()
+
+  function handleRegister(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const name = formData.get("name") as string
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+
+    // Simulação de banco local
+    const users = JSON.parse(localStorage.getItem("users") || "[]")
+    const userExists = users.find((u: any) => u.email === email)
+
+    if (userExists) {
+      setError("Ese e-mail está cadastrado.")
+      return
+    }
+
+    const newUser = { name, email, password }
+    users.push(newUser)
+    localStorage.setItem("users", JSON.stringify(users))
+
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+      router.push("/login")
+    }, 1000)
+  }
+
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      onSubmit={handleRegister}
+      className={cn("flex flex-col gap-6", className)}
+      {...props}
+    >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Create your account</h1>
@@ -25,30 +64,27 @@ export function RegisterForm({
 
         <Field>
           <FieldLabel htmlFor="name">Name</FieldLabel>
-          <Input id="name" type="text" placeholder="Your full name" required />
+          <Input id="name" name="name" type="text" placeholder="Your name" required />
         </Field>
 
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Input id="email" name="email" type="email" placeholder="m@example.com" required />
         </Field>
 
         <Field>
           <FieldLabel htmlFor="password">Password</FieldLabel>
-          <Input id="password" type="password" required />
+          <Input id="password" name="password" type="password" required />
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
-          <Input id="confirmPassword" type="password" required />
+          <Button type="submit" disabled={loading}>
+            {loading ? "Creating account..." : "Sign Up"}
+          </Button>
+          {error && <p className="text-sm text-red-500 mt-2 text-center">{error}</p>}
         </Field>
 
-        <Field>
-          <Button type="submit">Create account</Button>
-        </Field>
-
-        <FieldSeparator>Or sign up with</FieldSeparator>
-
+        <FieldSeparator>Or continue with</FieldSeparator>
         <Field>
           <Button variant="outline" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -59,11 +95,10 @@ export function RegisterForm({
             </svg>
             Sign up with GitHub
           </Button>
-
           <FieldDescription className="text-center">
             Already have an account?{" "}
             <a href="/login" className="underline underline-offset-4">
-              Log in
+              Login
             </a>
           </FieldDescription>
         </Field>

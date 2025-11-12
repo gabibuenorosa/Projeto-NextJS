@@ -1,3 +1,7 @@
+"use client"
+
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -13,14 +17,29 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
 
-export default function Page() {
+export default function DashboardPage() {
+  const router = useRouter()
+
+  useEffect(() => {
+    const loggedUser = localStorage.getItem("loggedUser")
+    if (!loggedUser) {
+      router.push("/login")
+    }
+  }, [router])
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedUser")
+    router.push("/login")
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
+        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator
               orientation="vertical"
@@ -40,7 +59,13 @@ export default function Page() {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
+
+          {/* Botão de logout */}
+          <Button variant="outline" onClick={handleLogout}>
+            Sair
+          </Button>
         </header>
+
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
             <div className="bg-muted/50 aspect-video rounded-xl" />
