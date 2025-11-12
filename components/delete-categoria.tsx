@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog'
 import { Trash2 } from 'lucide-react'
 import { useState, useTransition } from 'react'
-import { excluirCategoria } from '../actions'
+import { excluirCategoria } from '@/app/painel/categorias/action'
 import { toast } from 'sonner'
 
 interface DeleteCategoriaProps {

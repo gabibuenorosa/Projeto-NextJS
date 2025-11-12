@@ -1,8 +1,8 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import {prisma} from '@/lib/prisma-client'
-import AddCategorias from './_components/add-categorias'
-import EditCategoria from './_components/edit-categoria'
-import DeleteCategoria from './_components/delete-categoria'
+import AddCategorias from '@/components/add-categorias'
+import EditCategoria from '@/components/edit-categoria'
+import DeleteCategoria from '@/components/delete-categoria'
 
 export default async function CategoriasPage() {
   const categorias = await prisma.categorias.findMany({

@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Edit } from 'lucide-react'
 import { useState, useTransition } from 'react'
-import { editarCategoria } from '../actions'
+import { editarCategoria } from '@/app/painel/categorias/action'
 import { toast } from 'sonner'
 
 interface EditCategoriaProps {

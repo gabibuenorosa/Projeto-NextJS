@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useState, useTransition } from 'react'
-import { criarCategoria } from '../actions'
+import { criarCategoria } from '@/app/painel/categorias/action'
 import { toast } from 'sonner'
 
 export default function AddCategorias() {
