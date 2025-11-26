@@ -1,3 +1,7 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   SidebarInset,
@@ -5,23 +9,23 @@ import {
   SidebarTrigger
 } from "@/components/ui/sidebar"
 import UserMenu from "@/components/user-menu"
-import { auth } from "@/lib/auth"
-import { headers } from "next/headers"
-import { redirect } from "next/navigation"
 
-export default async function PainelLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
-  // Verificar autenticação
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
 
-  if (!session?.user) {
-    redirect("/login")
-  }
+export default function PainelLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const logged = localStorage.getItem("loggedUser")
+
+    if (!logged) {
+      router.replace("/login")
+    } else {
+      setLoading(false)
+    }
+  }, [router])
+
+  if (loading) return <div className="p-6">Carregando...</div>
 
   return (
     <SidebarProvider>

@@ -1,63 +1,37 @@
-'use server'
+"use server";
 
-import {prisma} from '@/lib/prisma-client'
-import { revalidatePath } from 'next/cache'
+import { prisma } from "@/lib/prisma-client";
 
-export async function criarCategoria(formData: FormData) {
-  const nome = formData.get('nome') as string
-
-  if (!nome || nome.trim() === '') {
-    return { error: 'Nome da categoria é obrigatório' }
-  }
-
-  try {
-    await prisma.categorias.create({
-      data: {
-        nome: nome.trim(),
-      },
-    })
-
-    revalidatePath('/painel/categorias')
-    return { success: true }
-  } catch (error) {
-    console.error('Erro ao criar categoria:', error)
-    return { error: 'Erro ao criar categoria' }
-  }
+export async function createCategoria(data: {
+  nome: string;
+  legenda?: string;
+  foto?: string;
+}) {
+  await prisma.categoria.create({
+    data: {
+      nome: data.nome,
+      legenda: data.legenda || "",
+      foto: data.foto || "",
+    },
+  });
 }
 
-export async function editarCategoria(id: string, formData: FormData) {
-  const nome = formData.get('nome') as string
-
-  if (!nome || nome.trim() === '') {
-    return { error: 'Nome da categoria é obrigatório' }
-  }
-
-  try {
-    await prisma.categorias.update({
-      where: { id },
-      data: {
-        nome: nome.trim(),
-      },
-    })
-
-    revalidatePath('/painel/categorias')
-    return { success: true }
-  } catch (error) {
-    console.error('Erro ao editar categoria:', error)
-    return { error: 'Erro ao editar categoria' }
-  }
+export async function updateCategoria(
+  id: string,
+  data: { nome: string; legenda?: string; foto?: string }
+) {
+  await prisma.categoria.update({
+    where: { id },
+    data: {
+      nome: data.nome,
+      legenda: data.legenda || "",
+      foto: data.foto || "",
+    },
+  });
 }
 
-export async function excluirCategoria(id: string) {
-  try {
-    await prisma.categorias.delete({
-      where: { id },
-    })
-
-    revalidatePath('/painel/categorias')
-    return { success: true }
-  } catch (error) {
-    console.error('Erro ao excluir categoria:', error)
-    return { error: 'Erro ao excluir categoria' }
-  }
+export async function deleteCategoria(id: string) {
+  await prisma.categoria.delete({
+    where: { id },
+  });
 }

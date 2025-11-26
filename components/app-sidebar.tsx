@@ -23,23 +23,23 @@ const data = {
   navMain: [
     {
       name: "Produtos",
-      link: "/painel/produtos" as const,
+      link: "/painel/produtos",
       icon: IconDatabase,
     },
     {
       name: "Categorias",
-      link: "/painel/categorias" as const,
+      link: "/painel/categorias",
       icon: IconFolder,
     },
     {
       name: "Pedidos",
-      link: "/painel/pedidos" as const,
+      link: "/painel/pedidos",
       icon: IconListDetails,
     },
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -57,6 +57,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>

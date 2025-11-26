@@ -42,7 +42,7 @@ export function LoginForm({
 
     setTimeout(() => {
       setLoading(false)
-      router.push("/dashboard")
+      router.push("/painel")
     }, 1000)
   }
 

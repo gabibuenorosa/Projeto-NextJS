@@ -2,14 +2,22 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+
+model Categoria {
+  id      String @id @default(uuid())
+  nome    String
+  legenda String?
+  foto    String?
+}
+
 
 model User {
   id            String    @id
@@ -69,9 +77,4 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
-}
-
-model Categorias {
-  id String @id @default(uuid())
-  nome String
 }
